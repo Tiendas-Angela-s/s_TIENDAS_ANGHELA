@@ -3,7 +3,7 @@
 
 ## Contexto e Issue Relacionada
 <!-- Ejemplo: Closes #12 -->
-Closes #12
+Closes #
 
 ## Alcance del Cambio
 - [ ] Implementación / corrección en `src/`

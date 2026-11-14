@@ -1,16 +1,32 @@
-name: CI PHP
+name: Validación Automática TDD - Inventario (CU-011)
+
 on:
   push:
-    branches: [main]
+    branches: [ main, develop, "feature/**" ]
   pull_request:
-    branches: [main]
+    branches: [ main, develop ]
+
 jobs:
-  test:
+  ejecutar-pruebas-php:
+    name: Ejecutar Suite de Pruebas PHP
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar entorno PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-      - run: composer install --no-interaction
-      - run: vendor/bin/phpunit
+          coverage: none
+
+      - name: Verificar sintaxis PHP
+        run: find src tests -name "*.php" -exec php -l {} \;
+
+      - name: Ejecutar pruebas TDD (*.test.php)
+        run: |
+          for f in $(find tests -name "*.test.php" | sort); do
+            echo "Ejecutando $f..."
+            php "$f"
+          done
